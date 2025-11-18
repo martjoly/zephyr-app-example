@@ -1,0 +1,61 @@
+
+name: Example build
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+# {{{ Build Zephyr application
+  build:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4.1.1
+        with:
+          path: example-application
+          fetch-depth: 0  # Checkout all the tags
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      - name: Setup Zephyr project
+        uses: zephyrproject-rtos/action-zephyr-setup@v1
+        with:
+          app-path: example-application
+          toolchains: arm-zephyr-eabi
+          ccache-cache-key: ${{ matrix.os }}
+
+      - name: Set env for Zephyr
+        run: |
+          echo "ZEPHYR_BASE=$(pwd)/zephyr" >> $GITHUB_ENV
+
+      # Configure build system
+      - name: Prepare build directory
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -DBOARD=nucleo_h563zi \
+            -G "Ninja" \
+            ../example-application
+
+      # Build
+      - name: Compile project
+        run: ninja -C build
+# }}}
+
+# vim: set sw=2 sts=2 et foldmethod=marker :
