@@ -38,6 +38,12 @@ jobs:
         run: |
           echo "ZEPHYR_BASE=$(pwd)/zephyr" >> $GITHUB_ENV
 
+      - name: Explore
+        run: |
+          ls *
+          ls zephyr/*
+          ls modules/*
+
       # Configure build system
       - name: Prepare build directory
         run: |
