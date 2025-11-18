@@ -1,0 +1,22 @@
+mainmenu "Zephy test application configuration"
+
+config TEST_CUSTOM_STRING
+        string "Custom test string"
+        default "test.custom.org"
+        help
+	  This feature not actively used, it demonstrates the use of a custom
+	  string defined in Kconfig.
+
+config TEST_CUSTOM_INT
+        int "Custom test integer"
+        default 128
+        depends on TEST_CUSTOM_BOOL
+        help
+	  Dummy integer used as demonstration for application configuration within
+	  a Kconfig file.
+
+config TEST_CUSTOM_BOOL
+        bool "Enable TEST_CUSTOM_INT"
+
+source "Kconfig.zephyr"
+
