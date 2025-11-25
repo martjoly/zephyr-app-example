@@ -1,0 +1,60 @@
+
+#include "customboard_nrf9151_common-partitioning.dtsi"
+#include "customboard_nrf9151_common-pinctrl.dtsi"
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+  model = "Perso CustomBoard (NRF91)";
+  compatible = "perso,customboard-nrf91";
+
+  chosen {
+    zephyr,console = &uart0;
+    zephyr,shell-uart = &uart0;
+    zephyr,uart-mcumgr = &uart0;
+    ncs,slm-uart = &uart2;
+  };
+
+  aliases {
+    watchdog0 = &wdt0;
+    mcuboot-button0 = &button0;
+  };
+
+  buttons {
+    compatible = "gpio-keys";
+    button0: button_0 {
+      gpios = <&gpio0 23 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+      label = "Push button 1";
+      zephyr,code = <INPUT_KEY_0>;
+    };
+  };
+};
+
+&gpiote {
+  status = "okay";
+};
+
+&gpio0 {
+  status = "okay";
+};
+
+&uart0 {
+  status = "okay";
+  current-speed = <115200>;
+  pinctrl-0 = <&uart0_default>;
+  pinctrl-1 = <&uart0_sleep>;
+  pinctrl-names = "default", "sleep";
+  // Disable flow control except when necessary, otherwise no application using UART0
+  // for log output will be able to work properly without a USB/UART adaptor connected.
+  //hw-flow-control;
+};
+
+&uart2 {
+  status = "okay";
+  current-speed = <115200>;
+  pinctrl-0 = <&uart2_default>;
+  pinctrl-1 = <&uart2_sleep>;
+  pinctrl-names = "default", "sleep";
+  hw-flow-control;
+};
+
+
