@@ -56,6 +56,22 @@ jobs:
       # Build
       - name: Compile project
         run: ninja -C build
+
+      # Find git tag
+      - name: Export Git tag
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: echo "GIT_TAG=$(git describe --tags --always --dirty)" >> $GITHUB_ENV
+
+
+      # Upload build results
+      - name: Upload Build Artifact
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v4.3.0
+        with:
+          name: zephyr_example_${{ env.GIT_TAG }}
+          path: |
+            ${{ github.workspace }}/build/zephyr/zephyr.elf
+
 # }}}
 
 # vim: set sw=2 sts=2 et foldmethod=marker :
