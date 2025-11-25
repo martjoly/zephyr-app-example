@@ -1,0 +1,25 @@
+identifier: customboard@A/stm32h562xx
+name: CustomBoard-STM32 Non-secure (rev. A)
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+ram: 640
+flash: 1024
+supported:
+  - gpio
+  - backup_sram
+  - can
+  - gpio
+  - uart
+  - entropy
+  - adc
+  - dac
+  - pwm
+  - counter
+  - spi
+  - usb_device
+  - rtc
+  - i2c
+  - i3c
+vendor: st
