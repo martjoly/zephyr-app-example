@@ -1,0 +1,16 @@
+board:
+  name: customboard
+  full_name: CustomBoard
+  vendor: perso
+  socs:
+  - name: stm32h562xx
+    variants:
+    - name: 'ns'
+  - name: nrf9151
+    variants:
+    - name: 'ns'
+  revision:
+    format: letter
+    default: A
+    revisions:
+    - name: A
